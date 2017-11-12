@@ -1,0 +1,23 @@
+var userTags;
+var activityTags;
+var matchesList;
+Random rand;
+
+function compareAll(userTags){
+	for(var i = 0; i < activityTags.length; i++){
+	if(isGoodActivity(activityTags[i], userTags[i])){
+	matchesList.push(activityTags[i]);
+	}
+	}
+	var randomNum = rand.nextInt(matchesList.length+1);
+	var k = randomNum;
+	while(k > 0){
+	console.log("How about " + matchesList[randomNum] + " ?");
+	if(isOk == false){
+	matchesList.splice(randomNumber, 0);
+	k--;
+	}
+	}
+	console.log("Sorry, no more recommendations are available");
+
+}
