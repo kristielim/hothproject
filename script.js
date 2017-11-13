@@ -1,4 +1,5 @@
 var activities = [];
+var matchesList = [];
 
 function attachEventHandlers() {
 	$('.button').on('click', handleImageClick);
@@ -13,12 +14,9 @@ function handleImageClick(event) {
 		if(tag != "any")
 			userTags.push(tag);
 	}
-	console.log(userTags);
 	const activityTags = activities[0][1];
-	console.log(activities[0][1]);
-	if(isGoodActivity(userTags,activityTags)){
-		alert("Good activity");
-	}
+	compareAll(userTags,activities); // populates matchesList
+	findSuggestion();
 
 }
 
@@ -27,7 +25,7 @@ $('document').ready(function() {
 	attachEventHandlers();
 	$.ajax({
         type: "GET",
-        url: "data:application/vnd.ms-excel;base64,QWN0aXZpdHksRWF0L0V4cGxvcmUsVGltZSxUcmFuc3BvcnQsQnVkZ2V0DQpEaWRkeSBSaWVzZSxFYXQgLGxlc3MgdGhhbiBhbiBob3VyLHdhbGssJA0KRm94IFRoZWF0ZXIsRXhwbG9yZSxhIGZldyBob3Vycyx3YWxrLCQkDQpIYW1tZXIgTXVzZXVtLEV4cGxvcmUsZGF5LHdhbGsgLEZSRUUNCkZvd2xlciBNdXNldW0gLEV4cGxvcmUsZGF5LFdhbGssRlJFRQ0KTSBFIE0gQm90YW5pY2FsIEdhcmRlbixFeHBsb3JlLGRheSxXYWxrLEZSRUUNClNhbnRhIE1vbmljYSBQaWVyLEV4cGxvcmUsZGF5ICxCdXMsJA0KR2V0dHkgQ2VudGVyLEV4cGxvcmUsZGF5LEJpa2UsRlJFRQ0KU2N1bHB0dXJlIEdhcmRlbixFeHBsb3JlLGxlc3MgdGhhbiBhbiBob3VyLFdhbGssRlJFRQ0KRmF0IFNhbCdzICxFYXQsbGVzcyB0aGFuIGFuIGhvdXIsd2FsaywkDQpEaXNuZXlsYW5kLEV4cGxvcmUsZGF5LEJ1cywkJCQNCg==",
+        url: "data:application/vnd.ms-excel;base64,QWN0aXZpdHksVHlwZSxUaW1lLFRyYW5zcG9ydCxCdWRnZXQNCkRpZGR5IFJpZXNlLEVhdCAsbGVzcy10aGFuLWFuLWhvdXIsd2FsaywkDQpGb3ggVGhlYXRlcixFeHBsb3JlLGEtZmV3LWhvdXJzLHdhbGssJCQNCkhhbW1lciBNdXNldW0sTGVhcm4sYS1mZXctaG91cnMsd2FsayAsRlJFRQ0KRm93bGVyIE11c2V1bSxMZWFybixhLWZldy1ob3Vycyx3YWxrLEZSRUUNCk0gRSBNIEJvdGFuaWNhbCBHYXJkZW4sRXhwbG9yZSxsZXNzLXRoYW4tYW4taG91cix3YWxrLEZSRUUNClNhbnRhIE1vbmljYSBQaWVyLEV4cGxvcmUsZGF5ICxidXMsJA0KR2V0dHkgQ2VudGVyLExlYXJuLGRheSxiaWtlLEZSRUUNClNjdWxwdHVyZSBHYXJkZW4sRXhwbG9yZSxsZXNzLXRoYW4tYW4taG91cix3YWxrLEZSRUUNCkZhdCBTYWwncyAsRWF0LGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssJA0KRGlzbmV5bGFuZCxFeHBsb3JlLGRheSxidXMsJCQkDQpJbiBuIE91dCxFYXQsbGVzcy10aGFuLWFuLWhvdXIsd2FsaywkDQpCZWxsYSBQaXRhLEVhdCxhLWZldy1ob3Vycyx3YWxrLCQNCkxpdHRsZSBUb2t5byxFeHBsb3JlLGRheSxidXMsJCQNCkdyaWZmaXRoIE9ic2VydmF0b3J5LExlYXJuLGRheSxidXMsRlJFRQ0KVW5pdmVyc2FsIFN0dWRpb3MsRXhwbG9yZSxkYXksYnVzLCQkJA0KVmVuaWNlIEJlYWNoLEV4cGxvcmUsZGF5LGJ1cywkDQpXYWxrIG9mIEZhbWUrQ2hpbmVzZSBUaGVhdGVyLEV4cGxvcmUsYS1mZXctaG91cnMsYnVzLEZSRUUNCkxBQ01BLEV4cGxvcmUsZGF5LGJpa2UsJA0KTGEgQnJlYSBUYXIgUGl0cyxMZWFybixkYXksYnVzLCQkDQpQaW5rJ3MgSG90IERvZ3MsRWF0LGEtZmV3LWhvdXJzLGJpa2UsJCQNCkhvd2xpbicgUmF5J3MgLEVhdCxhLWZldy1ob3VycyxidXMsJCQNCldlc3RmaWVsZCBDZW50dXJ5IENpdHksRXhwbG9yZSxhLWZldy1ob3VycyxiaWtlLCQkDQpUaGUgR3JvdmUsRXhwbG9yZSxkYXksYnVzLCQkDQpPcmlnaW5hbCBGYXJtZXIncyBNYXJrZXQsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KbGEgem9vLEV4cGxvcmUsZGF5LGJ1cywkJA0KTmF0dXJhbCBIaXN0b3J5IE11c2V1bSxMZWFybixkYXksYnVzLCQNClBldGVyc2VuIEF1dG8gTXVzZXVtLExlYXJuLGRheSxiaWtlLCQkDQpXQiBTdHVkaW8gVG91cixFeHBsb3JlLGRheSxidXMsJCQkDQpNdXNldW0gb2YgRGVhdGggLExlYXJuLGRheSxidXMsJCQNCkhvbG9jYXVzdCBNdXN1ZW0sTGVhcm4sZGF5LGJ1cyxGUkVFDQpNdXNldW0gb2YgVG9sZXJhbmNlLExlYXJuLGRheSxidXMsJA0KS29yZWF0b3duIFBsYXphLEV4cGxvcmUsZGF5LGJ1cywkJA0KR2V0dHkgVmlsbGEsTGVhcm4sZGF5LGJ1cyxGUkVFDQpQaGlsaXBwZSdzIHRoZSBPcmlnaW5hbCAsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KQ2FsaWZvcm5pYSBTY2llbmNlIENlbnRlcixMZWFybixkYXksYnVzLEZSRUUNClVDTEEgQXRobGV0aWNzIEhhbGwgb2YgRmFtZSxFeHBsb3JlLGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssRlJFRQ0KUm9kZW8gRHJpdmUgYXQgQmV2ZXJseSBIaWxscyxFeHBsb3JlLGEtZmV3LWhvdXJzLGJpa2UsJCQkDQpBbW9lYmEgTXVzaWMgLEV4cGxvcmUsYS1mZXctaG91cnMsYnVzLCQkDQpEb2Nrd2VpbGVyIEJlYWNoICxFeHBsb3JlLGEtZmV3LWhvdXJzLGJ1cyxGUkVFDQpUaGUgQnJvYWQsTGVhcm4sYSBkYXksYnVzLCQkDQpLbGVpbnJvY2sgQ2VudGVyIGZvciBJbnRlcm5ldCBTdHVkaWVzLExlYXJuLGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssRlJFRQ0KQnJ1eGllJ3MsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KODUgZGVncmVlcyxFYXQsYS1mZXctaG91cnMsYnVzLCQNClN0YW4ncyBEb251dHMsRWF0LGxlc3MtdGhhbi1hbi1ob3VyLHdhbGsgLCQNCg==",
         dataType: "text",
         success: function(data) {processData(data);}
      });
@@ -72,4 +70,23 @@ function processData(allText) {
         }
     }
     console.log(activities[0]);
+}
+
+// adds activity names to matchesList
+function compareAll(userTags, activityList){
+	for(let i = 0; i < activityList.length; i++){
+		if(isGoodActivity(userTags, activityList[i][1])){
+			console.log('pushed '+activityList[i][0])
+			matchesList.push(activityList[i][0]);
+		}
+	}
+}
+
+function findSuggestion(){
+	if(matchesList == 0) {
+		alert('No suggestions found, sorry :(');
+	} else {
+		var randomNum = Math.floor(Math.random() * (matchesList.length+1));
+		alert("How about " + matchesList[randomNum] + "?");
+	}	
 }
