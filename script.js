@@ -1,3 +1,4 @@
+var activities = [];
 
 function attachEventHandlers() {
 	$('.button').on('click', handleImageClick);
@@ -13,7 +14,8 @@ function handleImageClick(event) {
 			userTags.push(tag);
 	}
 	console.log(userTags);
-	const activityTags = ['explore'];
+	const activityTags = activities[0][1];
+	console.log(activities[0][1]);
 	if(isGoodActivity(userTags,activityTags)){
 		alert("Good activity");
 	}
@@ -54,21 +56,20 @@ function isGoodActivity(userTags, activityTags){
 function processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
-    var lines = [];
 
     for (var i=1; i<allTextLines.length; i++) {
         var data = allTextLines[i].split(',');
         if (data.length == headers.length) {
 
             var tarr = [];
-            tarr.push(data[0]);
+            tarr.push(data[0].trim());
             var tags = [];
             for (var j=1; j<headers.length; j++) {
-                tags.push(data[j]);
+                tags.push(data[j].trim());
             }
             tarr.push(tags);
-            lines.push(tarr);
+            activities.push(tarr);
         }
     }
-    console.log(lines[0]);
+    console.log(activities[0]);
 }
