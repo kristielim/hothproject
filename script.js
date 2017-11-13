@@ -6,7 +6,7 @@ function attachEventHandlers() {
 
 function handleImageClick(event) {
 	const userTags = [];
-	const menuIDs = ['category','time']
+	const menuIDs = ['category','time','transport','budget']
 	for (let menuID of menuIDs) {
  		const element = document.getElementById(menuID);
 		const tag = element.options[element.selectedIndex].value;
