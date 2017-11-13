@@ -1,5 +1,6 @@
 var activities = [];
 var matchesList = [];
+var data = 'Activity,Type,Time,Transport,Budget^ Diddy Riese,Eat ,less-than-an-hour,walk,$^ Fox Theater,Explore,a-few-hours,walk,$$^ Hammer Museum,Learn,a-few-hours, day,walk, bus,FREE^ Fowler Museum,Learn,a-few-hours,walk,FREE^ M E M Botanical Garden,Explore,less-than-an-hour,walk,FREE^ Santa Monica Pier,Explore,day, a-few-hours,bus,$^ Getty Center,Learn,day, a-few-hours,bike, bus,FREE^ Sculpture Garden,Explore,less-than-an-hour,walk,FREE^ Fat Sal\'s ,Eat,less-than-an-hour,walk,$^ Disneyland,Explore,day,bus,$$$^ In n Out,Eat,less-than-an-hour,walk,$^ Bella Pita,Eat,a-few-hours,walk,$^ Little Tokyo,Explore,day, a-few-hours,bus,$$, $^ Griffith Observatory,Learn,day,bus,FREE^ Universal Studios,Explore,day,bus,$$$^ Venice Beach,Explore,day,bus,$^ Walk of Fame+Chinese Theater,Explore,a-few-hours,bus,FREE^ LACMA,Explore,day, a-few-hours,bike, bus,$^ La Brea Tar Pits,Learn,day,bus,$$^ Pink\'s Hot Dogs,Eat,a-few-hours,bike,$$^ Howlin\' Ray\'s ,Eat,a-few-hours,bus,$$^ Westfield Century City,Explore,a-few-hours,bike, bus,$$^ The Grove,Explore,day,bus,$$^ Original Farmer\'s Market,Eat,a-few-hours,bus,$$^ la zoo,Explore,day,bus,$$^ Natural History Museum,Learn,day,bus,$^ Petersen Auto Museum,Learn,day,bike,$$^ WB Studio Tour,Explore,day,bus,$$$^ Museum of Death ,Learn,day,bus,$$^ Holocaust Museum,Learn,day,bus,FREE^ Museum of Tolerance,Learn,day,bus,$^ Koreatown Plaza,Explore,day, a-few-hours,bus,$$^ Getty Villa,Learn,day,bus,FREE^ Philippe\'s the Original ,Eat,a-few-hours,bus,$$^ California Science Center,Learn,day,bus,FREE^ UCLA Athletics Hall of Fame,Explore,less-than-an-hour,walk,FREE^ Rodeo Drive at Beverly Hills,Explore,a-few-hours,bike, bus,$$$^ Amoeba Music ,Explore,a-few-hours,bus,$$^ Dockweiler Beach ,Explore,a-few-hours,bus,FREE^ The Broad,Learn,a day,bus,$$^ Kleinrock Center for Internet Studies,Learn,less-than-an-hour,walk,FREE^ Bruxie\'s,Eat,a-few-hours,bus,$$^ 85 degrees,Eat,a-few-hours,bus,$^ Stan\'s Donuts,Eat,less-than-an-hour,walk, bus,$^Poke Me,Eat,a-few-hours,less-than-an-hour,walk,$$,$^'
 
 function attachEventHandlers() {
 	$('.button').on('click', handleImageClick);
@@ -23,12 +24,7 @@ function handleImageClick(event) {
 $('document').ready(function() {
 
 	attachEventHandlers();
-	$.ajax({
-        type: "GET",
-        url: "data:application/vnd.ms-excel;base64,QWN0aXZpdHksVHlwZSxUaW1lLFRyYW5zcG9ydCxCdWRnZXQNCkRpZGR5IFJpZXNlLEVhdCAsbGVzcy10aGFuLWFuLWhvdXIsd2FsaywkDQpGb3ggVGhlYXRlcixFeHBsb3JlLGEtZmV3LWhvdXJzLHdhbGssJCQNCkhhbW1lciBNdXNldW0sTGVhcm4sYS1mZXctaG91cnMsd2FsayAsRlJFRQ0KRm93bGVyIE11c2V1bSxMZWFybixhLWZldy1ob3Vycyx3YWxrLEZSRUUNCk0gRSBNIEJvdGFuaWNhbCBHYXJkZW4sRXhwbG9yZSxsZXNzLXRoYW4tYW4taG91cix3YWxrLEZSRUUNClNhbnRhIE1vbmljYSBQaWVyLEV4cGxvcmUsZGF5ICxidXMsJA0KR2V0dHkgQ2VudGVyLExlYXJuLGRheSxiaWtlLEZSRUUNClNjdWxwdHVyZSBHYXJkZW4sRXhwbG9yZSxsZXNzLXRoYW4tYW4taG91cix3YWxrLEZSRUUNCkZhdCBTYWwncyAsRWF0LGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssJA0KRGlzbmV5bGFuZCxFeHBsb3JlLGRheSxidXMsJCQkDQpJbiBuIE91dCxFYXQsbGVzcy10aGFuLWFuLWhvdXIsd2FsaywkDQpCZWxsYSBQaXRhLEVhdCxhLWZldy1ob3Vycyx3YWxrLCQNCkxpdHRsZSBUb2t5byxFeHBsb3JlLGRheSxidXMsJCQNCkdyaWZmaXRoIE9ic2VydmF0b3J5LExlYXJuLGRheSxidXMsRlJFRQ0KVW5pdmVyc2FsIFN0dWRpb3MsRXhwbG9yZSxkYXksYnVzLCQkJA0KVmVuaWNlIEJlYWNoLEV4cGxvcmUsZGF5LGJ1cywkDQpXYWxrIG9mIEZhbWUrQ2hpbmVzZSBUaGVhdGVyLEV4cGxvcmUsYS1mZXctaG91cnMsYnVzLEZSRUUNCkxBQ01BLEV4cGxvcmUsZGF5LGJpa2UsJA0KTGEgQnJlYSBUYXIgUGl0cyxMZWFybixkYXksYnVzLCQkDQpQaW5rJ3MgSG90IERvZ3MsRWF0LGEtZmV3LWhvdXJzLGJpa2UsJCQNCkhvd2xpbicgUmF5J3MgLEVhdCxhLWZldy1ob3VycyxidXMsJCQNCldlc3RmaWVsZCBDZW50dXJ5IENpdHksRXhwbG9yZSxhLWZldy1ob3VycyxiaWtlLCQkDQpUaGUgR3JvdmUsRXhwbG9yZSxkYXksYnVzLCQkDQpPcmlnaW5hbCBGYXJtZXIncyBNYXJrZXQsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KbGEgem9vLEV4cGxvcmUsZGF5LGJ1cywkJA0KTmF0dXJhbCBIaXN0b3J5IE11c2V1bSxMZWFybixkYXksYnVzLCQNClBldGVyc2VuIEF1dG8gTXVzZXVtLExlYXJuLGRheSxiaWtlLCQkDQpXQiBTdHVkaW8gVG91cixFeHBsb3JlLGRheSxidXMsJCQkDQpNdXNldW0gb2YgRGVhdGggLExlYXJuLGRheSxidXMsJCQNCkhvbG9jYXVzdCBNdXN1ZW0sTGVhcm4sZGF5LGJ1cyxGUkVFDQpNdXNldW0gb2YgVG9sZXJhbmNlLExlYXJuLGRheSxidXMsJA0KS29yZWF0b3duIFBsYXphLEV4cGxvcmUsZGF5LGJ1cywkJA0KR2V0dHkgVmlsbGEsTGVhcm4sZGF5LGJ1cyxGUkVFDQpQaGlsaXBwZSdzIHRoZSBPcmlnaW5hbCAsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KQ2FsaWZvcm5pYSBTY2llbmNlIENlbnRlcixMZWFybixkYXksYnVzLEZSRUUNClVDTEEgQXRobGV0aWNzIEhhbGwgb2YgRmFtZSxFeHBsb3JlLGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssRlJFRQ0KUm9kZW8gRHJpdmUgYXQgQmV2ZXJseSBIaWxscyxFeHBsb3JlLGEtZmV3LWhvdXJzLGJpa2UsJCQkDQpBbW9lYmEgTXVzaWMgLEV4cGxvcmUsYS1mZXctaG91cnMsYnVzLCQkDQpEb2Nrd2VpbGVyIEJlYWNoICxFeHBsb3JlLGEtZmV3LWhvdXJzLGJ1cyxGUkVFDQpUaGUgQnJvYWQsTGVhcm4sYSBkYXksYnVzLCQkDQpLbGVpbnJvY2sgQ2VudGVyIGZvciBJbnRlcm5ldCBTdHVkaWVzLExlYXJuLGxlc3MtdGhhbi1hbi1ob3VyLHdhbGssRlJFRQ0KQnJ1eGllJ3MsRWF0LGEtZmV3LWhvdXJzLGJ1cywkJA0KODUgZGVncmVlcyxFYXQsYS1mZXctaG91cnMsYnVzLCQNClN0YW4ncyBEb251dHMsRWF0LGxlc3MtdGhhbi1hbi1ob3VyLHdhbGsgLCQNCg==",
-        dataType: "text",
-        success: function(data) {processData(data);}
-     });
+	processData(data);
 
 });
 
@@ -52,22 +48,19 @@ function isGoodActivity(userTags, activityTags){
 }
 
 function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var headers = allTextLines[0].split(',');
+    var allTextLines = allText.split('^');
 
     for (var i=1; i<allTextLines.length; i++) {
         var data = allTextLines[i].split(',');
-        if (data.length == headers.length) {
-
-            var tarr = [];
-            tarr.push(data[0].trim());
-            var tags = [];
-            for (var j=1; j<headers.length; j++) {
-                tags.push(data[j].trim());
-            }
-            tarr.push(tags);
-            activities.push(tarr);
+        var tarr = [];
+        tarr.push(data[0].trim());
+        var tags = [];
+        for (var j=1; j<data.length; j++) {
+            tags.push(data[j].trim());
         }
+        tarr.push(tags);
+        activities.push(tarr);
+        console.log(tarr);
     }
     console.log(activities[0]);
 }
