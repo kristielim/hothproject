@@ -14,7 +14,7 @@ function handleImageClick(event) {
 		if(tag != "any")
 			userTags.push(tag);
 	}
-	const activityTags = activities[0][1];
+	matchesList = [];
 	compareAll(userTags,activities); // populates matchesList
 	findSuggestion();
 
@@ -86,7 +86,8 @@ function findSuggestion(){
 	if(matchesList == 0) {
 		alert('No suggestions found, sorry :(');
 	} else {
-		var randomNum = Math.floor(Math.random() * (matchesList.length+1));
+		var randomNum = Math.floor(Math.random() * matchesList.length);
+		console.log(randomNum);
 		alert("How about " + matchesList[randomNum] + "?");
 	}	
 }
