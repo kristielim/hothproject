@@ -1,10 +1,13 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Activity Finder</title>
+	<title>Cruisin' Bruin</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="script.js"></script>
@@ -12,44 +15,48 @@
 </head>
 <body>
 	
+	<img class="logo" src="resources/bearlogo.png">
 
-		<div class = "instructions">
-			<h3>Welcome to Cruisin' Bruin. We've all asked ourselves the same question: What am I going to do this weekend/this afternoon/this hour before my midterm? Look no further. Input whether you want to Eat, Learn, or Explore, how much time you have, how far you want to travel, and how much money you want to spend. Then let our website choose your adventure for you. </h3>
+		<div class="instructions">
+			<h3>Welcome to Cruisin' Bruin. We've all asked ourselves the same question: What am I going to do this weekend/this afternoon/this hour before my midterm? Look no further! Let our website choose your adventure for you! </h3>
 		</div>
 	
+	<div class="row dropdowns">
 	
-	<select class="custom-select" id="category">
-		<option value="any">Any Adventure</option>
-		<option value="eat">Eat</option>
-		<option value="explore">Explore</option>
-		<option value="learn">Learn</option>
-	</select>
-	
+		<select class="col-lg-3 custom-select btn btn-primary" id="category">
+			<option value="any">Any Adventure</option>
+			<option value="eat">Eat</option>
+			<option value="explore">Explore</option>
+			<option value="learn">Learn</option>
+		</select>
+		
 
-	<select class="custom-select" id="time">
-		<option value="any">Any Time</option>
-		<option value="less-than-an-hour">Less than an hour</option>
-		<option value="a-few-hours">Few hours</option>
-		<option value="day">Day</option>
-	</select>
+		<select class="col-lg-3 custom-select btn btn-primary" id="time">
+			<option value="any">Any Time</option>
+			<option value="less-than-an-hour">Less than an hour</option>
+			<option value="a-few-hours">Few hours</option>
+			<option value="day">Day</option>
+		</select>
 
 
-	<select class="custom-select" id="transport">
-		<option value="any">Any Transport</option>
-		<option value="walk">Walk</option>
-		<option value="bus">Bus</option>
-		<option value="bike">Bike</option>
-	</select>
-	<select class="custom-select" id="budget">
-		<option value="any">Any Budget</option>
-		<option value="free">Free</option>
- 		<option value="$">$</option>
- 		<option value="$$">$$</option>
-		<option value="$$$">$$$</option>
+		<select class="col-lg-3 custom-select btn btn-primary" id="transport">
+			<option value="any">Any Transport</option>
+			<option value="walk">Walk</option>
+			<option value="bus">Bus</option>
+			<option value="bike">Bike</option>
+		</select>
+		<select class="col-lg-3 custom-select btn btn-primary" id="budget">
+			<option value="any">Any Budget</option>
+			<option value="free">Free</option>
+	 		<option value="$">$</option>
+	 		<option value="$$">$$</option>
+			<option value="$$$">$$$</option>
 
-	</select>
+		</select>
 
-	<button type="button" class="button">Generate Adventure!</button>
+	</div>
+
+	<button type="button" class="button btn btn-success submit">Generate Adventure!</button>
 
 
 </body>
